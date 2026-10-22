@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillTrack — Gestiona tus retos y habilidades</title>
+  <meta name="description" content="SkillTrack es tu plataforma personal para gestionar retos, aprender nuevas habilidades y medir tu progreso de forma visual.">
+  <meta name="theme-color" content="#7c3aed">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== AUTH CONTAINER ===== -->
+  <main id="auth-container" role="main" style="display:none;">
+    <!-- Rendered by App.renderAuthPage() -->
+  </main>
+
+  <!-- ===== APP CONTAINER ===== -->
+  <div id="app-container" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" role="complementary" aria-label="Menú lateral">
+      <!-- Rendered by App.renderSidebar() -->
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div id="sidebar-overlay" onclick="App.closeMobileMenu()"></div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+
+      <!-- Topbar -->
+      <header class="topbar" role="banner">
+        <div class="topbar-left">
+          <button class="menu-toggle" onclick="App.toggleMobileMenu()" aria-label="Abrir menú" aria-expanded="false">☰</button>
+          <span id="topbar-title" class="page-title">Panel principal</span>
+        </div>
+        <div class="topbar-right">
+          <span style="font-size:0.75rem;color:var(--text-muted);display:none;" id="topbar-version">v1.0</span>
+        </div>
+      </header>
+
+      <!-- Page Body -->
+      <main id="page-body" role="main">
+        <div class="loading-overlay" style="min-height:60vh;">
+          <div class="loading-spinner" style="width:40px;height:40px;border-width:3px;"></div>
+        </div>
+      </main>
+
+    </div><!-- /main-content -->
+  </div><!-- /app-container -->
+
+  <!-- Toast Container -->
+  <div id="toast-container" role="alert" aria-live="polite"></div>
+
+  <!-- ===== SCRIPTS ===== -->
+
+  <!-- Supabase SDK v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+  <!-- App modules (order matters) -->
+  <script src="supabase.js"></script>
+  <script src="ui.js"></script>
+  <script src="auth.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="habilidades.js"></script>
+  <script src="retos.js"></script>
+  <script src="avances.js"></script>
+  <script src="reportes.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Bootstrap -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      App.init().catch(err => {
+        console.error('Error al inicializar la app:', err);
+        document.getElementById('auth-container').style.display = 'flex';
+        document.getElementById('auth-container').innerHTML = `
+          <div class="auth-card">
+            <div style="text-align:center;padding:1rem;">
+              <div style="font-size:2.5rem;margin-bottom:1rem;">⚠️</div>
+              <h3 style="margin-bottom:0.5rem;">Error de conexión</h3>
+              <p style="color:var(--text-secondary);font-size:0.875rem;">No se pudo conectar con el servidor. Recarga la página.</p>
+              <button class="btn btn-primary" style="margin-top:1rem;" onclick="location.reload()">Recargar</button>
+            </div>
+          </div>`;
+      });
+    });
+  </script>
+
+</body>
+</html>
